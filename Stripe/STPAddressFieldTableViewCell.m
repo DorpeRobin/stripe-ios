@@ -23,7 +23,6 @@
 @property(nonatomic, weak)id<STPAddressFieldTableViewCellDelegate>delegate;
 @property(nonatomic, strong) NSString *ourCountryCode;
 @property(nonatomic, assign) STPPostalCodeType postalCodeType;
-@property(nonatomic, assign) BOOL lastInList;
 @end
 
 @implementation STPAddressFieldTableViewCell
@@ -81,10 +80,7 @@
         _lastInList = lastInList;
         _type = type;
         self.textField.text = contents;
-        if (!lastInList) {
-            self.textField.returnKeyType = UIReturnKeyNext;
-        }
-        
+
         NSString *ourCountryCode = nil;
         if ([self.delegate respondsToSelector:@selector(addressFieldTableViewCountryCode)]) {
             ourCountryCode = self.delegate.addressFieldTableViewCountryCode;
@@ -104,8 +100,19 @@
     [self updateAppearance];
 }
 
+- (void)setLastInList:(BOOL)lastInList {
+    _lastInList = lastInList;
+    [self updateTextFieldsAndCaptions];
+}
+
 - (void)updateTextFieldsAndCaptions {
     self.captionLabel.text = [self captionForAddressField:self.type];
+    if (!self.lastInList) {
+        self.textField.returnKeyType = UIReturnKeyNext;
+    }
+    else {
+        self.textField.returnKeyType = UIReturnKeyDefault;
+    }
     switch (self.type) {
         case STPAddressFieldTypeName:
             self.textField.placeholder = STPLocalizedString(@"John Appleseed", @"Placeholder for Name field on address form");
@@ -145,6 +152,9 @@
             if (!self.lastInList) {
                 self.textField.inputAccessoryView = self.inputAccessoryToolbar;
             }
+            else {
+                self.textField.inputAccessoryView = nil;
+            }
             break;
         case STPAddressFieldTypeCountry:
             self.textField.placeholder = nil;
@@ -173,6 +183,9 @@
             self.textField.selectionEnabled = NO;
             if (!self.lastInList) {
                 self.textField.inputAccessoryView = self.inputAccessoryToolbar;
+            }
+            else {
+                self.textField.inputAccessoryView = nil;
             }
             break;
         case STPAddressFieldTypeEmail:
