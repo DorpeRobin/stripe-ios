@@ -246,22 +246,17 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         fedEx.identifier = "fedex"
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            if address.country == nil {
-                completion(nil, [])
+            if address.country == nil || address.country == "US" {
+                completion(nil, [upsGround, fedEx])
+            }
+            else if address.country == "AQ" {
+                let error = NSError(domain: "ShippingError", code: 123, userInfo: [NSLocalizedDescriptionKey: "Invalid Shipping Address",
+                                                                                   NSLocalizedFailureReasonErrorKey: "We can't ship to this country."])
+                completion(error, [])
             }
             else {
-                if address.country == "US" {
-                    completion(nil, [upsGround, fedEx])
-                }
-                else if address.country == "AE" {
-                    let error = NSError(domain: "ShippingError", code: 123, userInfo: [NSLocalizedDescriptionKey: "Invalid Shipping Address",
-                                                                                       NSLocalizedFailureReasonErrorKey: "We can't ship to this country."])
-                    completion(error, [])
-                }
-                else {
-                    fedEx.amount = 20.99
-                    completion(nil, [upsWorldwide, fedEx])
-                }
+                fedEx.amount = 20.99
+                completion(nil, [upsWorldwide, fedEx])
             }
         }
     }
