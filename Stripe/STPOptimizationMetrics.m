@@ -89,7 +89,6 @@ NSString *const STPUserDefaultsKeyTotalAppUsageDuration = @"STPTotalAppUsageDura
     payload[@"total_app_usage_duration"] = [self totalAppUsageDuration];
     payload[@"session_app_open_time"] = [self timestampWithDate:self.sessionAppOpenTime];
     payload[@"sms_autofill_used"] = @(self.smsAutofillUsed);
-    payload[@"current_time"] = [self timestampWithDate:[NSDate date]];
     payload[@"events"] = self.events;
     UIDevice *device = [UIDevice currentDevice];
     NSString *version = device.systemVersion;
