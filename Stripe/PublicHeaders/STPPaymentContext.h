@@ -109,7 +109,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  If you support Apple Pay, you can optionally set the PKPaymentSummaryItems you want to display here instead of using `paymentAmount`
- *  If not set, a single summary item will be automatically generated using `paymentAmount` and your companyName.
+ *  If not set, a single summary item will be automatically generated using `paymentAmount` and your configuration's `companyName`. The grand total (the amount of the last summary item) must be greater than zero.
  *  @see PKPaymentRequest for more information
  *
  *  @note You should only set either this or `paymentAmount`, not both. The other will be automatically calculated on demand using your `paymentCurrency.`
