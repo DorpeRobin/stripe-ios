@@ -84,28 +84,28 @@ NSString *const STPUserDefaultsKeyTotalAppUsageDuration = @"STPTotalAppUsageDura
 
 - (NSDictionary *)serialize {
     NSMutableDictionary *payload = [NSMutableDictionary new];
-    payload[@"first_app_open_time"] = [self timestampWithDate:[self firstAppOpenTime]];
-    payload[@"total_app_open_count"] = [self totalAppOpenCount];
-    payload[@"total_app_usage_duration"] = [self totalAppUsageDuration];
-    payload[@"session_app_open_time"] = [self timestampWithDate:self.sessionAppOpenTime];
-    payload[@"sms_autofill_used"] = @(self.smsAutofillUsed);
-    payload[@"events"] = self.events;
+    payload[@"ios_first_app_open_time"] = [self timestampWithDate:[self firstAppOpenTime]];
+    payload[@"ios_total_app_open_count"] = [self totalAppOpenCount];
+    payload[@"ios_total_app_usage_duration"] = [self totalAppUsageDuration];
+    payload[@"ios_session_app_open_time"] = [self timestampWithDate:self.sessionAppOpenTime];
+    payload[@"ios_sms_autofill_used"] = @(self.smsAutofillUsed);
+    payload[@"ios_events"] = self.events;
     UIDevice *device = [UIDevice currentDevice];
     NSString *version = device.systemVersion;
     if (version) {
-        payload[@"os_version"] = version;
+        payload[@"ios_os_version"] = version;
     }
     struct utsname systemInfo;
     uname(&systemInfo);
     NSString *deviceType = @(systemInfo.machine);
     if (deviceType) {
-        payload[@"device_type"] = deviceType;
+        payload[@"ios_device_type"] = deviceType;
     }
     float batteryLevel = device.batteryLevel;
     if (batteryLevel > 0) {
-        payload[@"battery_level"] = @(batteryLevel);
+        payload[@"ios_battery_level"] = @(batteryLevel);
     }
-    payload[@"battery_state"] = [self stringForBatteryState:device.batteryState];
+    payload[@"ios_battery_status"] = [self stringForBatteryState:device.batteryState];
     return payload;
 }
 
